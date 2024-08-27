@@ -7,17 +7,24 @@
 			"DOM",
 			"DOM.Iterable"
 		],
+		"experimentalDecorators": true,
+		"allowJs": false,
+		"skipLibCheck": false,
+		"esModuleInterop": false,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
 		"module": "ESNext",
-		"skipLibCheck": true,
 		/* Bundler mode */
 		"moduleResolution": "bundler",
-		"allowImportingTsExtensions": true,
+		"resolveJsonModule": true,
 		"isolatedModules": true,
-		"moduleDetection": "force",
 		"noEmit": true,
+		"removeComments": false,
+		"allowImportingTsExtensions": true,
+		"moduleDetection": "force",
 		"jsx": "react-jsx",
 		/* Linting */
-		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
@@ -30,14 +37,11 @@
 	},
 	"include": [
 		"./**/src/**/*",
-		".eslintrc.cjs",
-		"rollup.config.js",
-		"src/lib/store/.ts"
+		".eslintrc.cjs"
 	],
 	"exclude": [
 		"./**/dist/**/*",
 		"dist_old",
 		"./src/examples",
-		"./node_modules/**/*"
 	],
 }

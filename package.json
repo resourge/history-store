@@ -100,8 +100,8 @@
 		"vite": "^5.3.3",
 		"vite-plugin-banner": "^0.7.1",
 		"vite-plugin-checker": "^0.7.2",
-		"vite-plugin-dts": "^4.0.3",
-		"vite-tsconfig-paths": "^5.0.1",
+		"vite-plugin-dts": "^3.9.1",
+		"vite-tsconfig-paths": "^4.3.2",
 		"vitest": "^2.0.5"
 	},
 	"config": {

@@ -1,3 +1,5 @@
+import './GlobalEvents';
+
 export {
 	type ActionType, BeforeUrlChangeEvent, UrlChangeEvent, createNewUrlWithSearch,
 	eventBeforeUrlChange, eventURLChange, parseParams, parseSearch, parseSearchParams

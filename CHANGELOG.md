@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/resourge/history-store/compare/v1.0.1...v1.0.2) (2024-08-27)
+
+
+### Bug Fixes
+
+* **package:** fix main and types ([1324b5e](https://github.com/resourge/history-store/commit/1324b5e5a4505dcb10427a0b170148285079327f))
+
 ## [1.0.1](https://github.com/resourge/history-store/compare/v1.0.0...v1.0.1) (2024-08-27)
 
 

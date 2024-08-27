@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/resourge/history-store/compare/v1.0.2...v1.0.3) (2024-08-27)
+
+
+### Bug Fixes
+
+* **package:** add react-native-url-polyfill to peerDependencies ([19bfe94](https://github.com/resourge/history-store/commit/19bfe94247249fb9ac83e2b70ca29322d463d33e))
+
 ## [1.0.2](https://github.com/resourge/history-store/compare/v1.0.1...v1.0.2) (2024-08-27)
 
 

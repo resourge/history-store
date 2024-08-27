@@ -1,50 +1,147 @@
-# React + TypeScript + Vite
+# @resourge/history-store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+`@resourge/history-store` is a lightweight JavaScript utility for managing and subscribing to navigation events using the browser's History API. It simplifies tracking URL changes and enables seamless state management for single-page applications (SPAs).
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- `Unified Navigation State Management`: Consistent API for both web and React Native environments.
+- `Subscription-Based Updates`: Subscribe to URL changes and respond in real-time.
+- `Custom Navigation Actions`: Specify custom navigation actions or replace the current history state.
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Installation
+
+Install using [Yarn](https://yarnpkg.com):
+
+```sh
+yarn add @resourge/history-store
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+or NPM:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```sh
+npm install @resourge/history-store --save
 ```
+
+## Basic usage
+
+To start using `@resourge/history-store`, simply import and interact with the `HistoryStore` instance:
+
+```jsx
+import { HistoryStore } from '@resourge/history-store';
+
+// Subscribe to URL changes
+const unsubscribe = HistoryStore.subscribe(() => {
+  const [currentUrl, action, previous] = HistoryStore.getValue();
+  console.log('Current URL:', currentUrl.href);
+  console.log('Action:', action);
+  if (previous) {
+    console.log('Previous URL:', previous[0].href);
+  }
+});
+
+// Navigate to a new URL
+HistoryStore.navigate(new URL('/new-page', window.location.href));
+
+// Unsubscribe when done
+unsubscribe();
+```
+
+### Methods
+
+`subscribe(notification: () => void): () => void`
+
+Adds a callback function that will be triggered on URL change. Returns an unsubscribe function to remove the subscription.
+
+```typescript
+const unsubscribe = HistoryStore.subscribe(() => {
+  console.log('URL changed!');
+});
+```
+
+`getValue(): StoreValue`
+
+Returns the current navigation state, which is a tuple containing:
+
+- `url`: The current `URL`.
+- `action`: The type of action that triggered the change.
+- `previousValue`: (Optional) A tuple containing the previous `URL` and action.
+
+```typescript
+const [url, action, previous] = HistoryStore.getValue();
+```
+
+`navigate(url: URL, options?: NavigateOptions): void`
+
+Navigates to a specified `URL`. The optional `NavigateOptions` can be used to define the navigation action or whether to replace the current history state.
+
+- Web: 
+	- `url`: The current `URL`.
+	- `options.action`: The navigation action type (e.g., `push`, `replace`).
+	- `options.replace`: If `true`, replaces the current navigation state instead of pushing a new one.
+
+- react-native: 
+	- `url`: The current `URL`.
+	- `options.action`: The navigation action type (e.g., `push`, `replace`).
+	- `options.replace`: If `true`, replaces the current navigation state instead of pushing a new one.
+	- `config.stack`: If `true`, clears all navigation entries after the current URL before adding a new entry.
+
+```typescript
+HistoryStore.navigate(new URL('/new-page', window.location.href), { replace: true });
+```
+
+## Utility functions
+
+### `createNewUrlWithSearch(url: URL, newSearch: string, hash?: boolean): URL`
+
+Creates a new URL instance with an updated search string. Optionally updates the hash if specified.
+
+- Parameters:
+	- `url`: The original `URL`.
+	- `newSearch`: The new search string to be set.
+	- `hash`: If `true`, updates the URL hash with the new search string.
+
+```typescript
+const newUrl = createNewUrlWithSearch(new URL('/path', window.location.origin), 'foo=bar', true);
+```
+
+### `parseParams<T extends Record<string, any>>(paramValues: T): string`
+
+Converts parameters into a search string.
+
+- Parameters:
+	- `paramValues`: An object representing the parameters.
+
+```typescript
+const searchString = parseParams({ foo: 'bar', nested: { key: 'value' } });
+```
+
+### `parseSearchParams<T extends Record<string, any>>(searchParams: URLSearchParams, defaultParams?: T): T`
+
+Converts search parameters into an object with primitive values.
+
+- Parameters:
+	- `searchParams`: An instance of `URLSearchParams`.
+	- `defaultParams`: Optional default parameters to merge with the parsed result.
+
+```typescript
+const params = parseSearchParams(new URLSearchParams('foo=bar&nested[key]=value'));
+```
+
+### `parseSearch<T extends Record<string, any>>(search: string, defaultParams?: T): T`
+
+Converts a search string into an object with primitive values.
+
+- Parameters:
+	- `search`: The search string (e.g., `?foo=bar&nested[key]=value`).
+	- `defaultParams`: Optional default parameters to merge with the parsed result.
+
+```typescript
+const params = parseSearch('?foo=bar&nested[key]=value');
+```
+
+## License
+
+MIT Licensed.

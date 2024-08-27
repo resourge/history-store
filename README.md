@@ -15,6 +15,8 @@
 
 Install using [Yarn](https://yarnpkg.com):
 
+### Browser
+
 ```sh
 yarn add @resourge/history-store
 ```
@@ -23,6 +25,18 @@ or NPM:
 
 ```sh
 npm install @resourge/history-store --save
+```
+
+### react-native
+
+```sh
+yarn add @resourge/history-store react-native-url-polyfill
+```
+
+or NPM:
+
+```sh
+npm install @resourge/history-store react-native-url-polyfill --save
 ```
 
 ## Basic usage

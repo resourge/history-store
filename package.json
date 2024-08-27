@@ -57,10 +57,14 @@
 		"semantic-release": "semantic-release"
 	},
 	"peerDependencies": {
-		"react-native": "*"
+		"react-native": "*",
+		"react-native-url-polyfill": "*"
 	},
 	"peerDependenciesMeta": {
 		"react-native": {
+			"optional": true
+		},
+		"react-native-url-polyfill": {
 			"optional": true
 		}
 	},

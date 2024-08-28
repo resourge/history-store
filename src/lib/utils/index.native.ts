@@ -8,4 +8,5 @@ export {
 } from './navigationEvents/Events'
 export { parseParams } from './parseParams';
 export { parseSearch, parseSearchParams } from './parseSearch';
-export { History } from './createHistory/createHistory.native';
+export { History, type NavigateConfig } from './createHistory/createHistory.native';
+export type { NavigationActionType, NavigationState } from './createHistory/HistoryType';

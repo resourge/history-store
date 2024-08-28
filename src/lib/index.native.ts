@@ -5,7 +5,7 @@ setupURLPolyfill();
 export {
 	type ActionType, BeforeUrlChangeEvent, UrlChangeEvent, createNewUrlWithSearch,
 	eventBeforeUrlChange, eventURLChange, parseParams, parseSearch, parseSearchParams,
-	History
+	History, type NavigateConfig, type NavigationActionType, type NavigationState
 } from './utils/index.native';
 export {
 	default as HistoryStore,

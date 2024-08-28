@@ -7,8 +7,8 @@ import { type NavigationActionType, type NavigationState } from './HistoryType';
 type HistoryEvent = NavigationState;
 
 type NavigationType = {
-	beforeURLChange: (current: NavigationState, previous: NavigationState, next: () => void) => boolean
-	URLChange: (current: NavigationState, previous: NavigationState) => void
+	beforeURLChange: (current: NavigationState, next: () => void) => boolean
+	URLChange: (current: NavigationState) => void
 };
 
 export type NavigateConfig = {
@@ -71,8 +71,7 @@ function createHistory() {
 	function navigateNext(
 		url: URL, 
 		navigationAction: NavigationActionType,
-		current: NavigationState,
-		previous: NavigationState
+		current: NavigationState
 	) {
 		setHistory( 
 			navigationAction,
@@ -85,7 +84,7 @@ function createHistory() {
 		const onChangeEvents = getEvent('URLChange');
 
 		onChangeEvents.forEach((event) => {
-			event(current, previous);
+			event(current);
 		});
 	}
 
@@ -96,27 +95,18 @@ function createHistory() {
 			action: navigationAction,
 			url 
 		};
-
-		const previous: NavigationState = {
-			action: state.action,
-			url: state.url 
-		};
-
-		if ( current.action === previous.action && current.url === previous.url ) {
-			return;
-		}
 		
 		if ( 
 			beforeURLChange.some((event) => 
-				!event(current, previous, () => {
-					navigateNext(url, navigationAction, current, previous);
+				!event(current, () => {
+					navigateNext(url, navigationAction, current);
 				})
 			) 
 		) {
 			return;
 		}
 
-		navigateNext(url, navigationAction, current, previous);
+		navigateNext(url, navigationAction, current);
 	}
 
 	function navigate(

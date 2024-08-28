@@ -2,8 +2,6 @@ it('App', () => {
 	expect(true).toBeTruthy();
 });
 
-export {};
-
 /*
 const object1 = {
 	test: 1,

@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/resourge/history-store/compare/v1.3.0...v1.3.1) (2024-08-28)
+
+
+### Bug Fixes
+
+* **index.native:** add missing types to export ([43fd400](https://github.com/resourge/history-store/commit/43fd40039a944b465222785f1cb3857e03f00004))
+
 # [1.3.0](https://github.com/resourge/history-store/compare/v1.2.1...v1.3.0) (2024-08-28)
 
 

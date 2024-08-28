@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/resourge/history-store/compare/v1.0.3...v1.1.0) (2024-08-28)
+
+
+### Features
+
+* **createhistory.native:** simplify events ([8c469fd](https://github.com/resourge/history-store/commit/8c469fd1613b8457ee21f910a2d7d6c6d3348811))
+
 ## [1.0.3](https://github.com/resourge/history-store/compare/v1.0.2...v1.0.3) (2024-08-27)
 
 

@@ -19,7 +19,7 @@ function toIgnore(value: any): boolean {
 		value === undefined
 }
 
-function _parseParams (
+function parseObject (
 	state: any, 
 	urlParams = new URLSearchParams(),
 	previousKey = ''
@@ -34,7 +34,7 @@ function _parseParams (
 			const key = `${previousKey ? `${previousKey}.` : ''}${_key}`
 			const value = state[_key];
 
-			urlParams = _parseParams(value, urlParams, key);
+			urlParams = parseObject(value, urlParams, key);
 		})
 		return urlParams;
 	}
@@ -42,7 +42,7 @@ function _parseParams (
 	if ( Array.isArray(state) ) {
 		state.forEach((value, index) => {
 			const key = `${previousKey ? `${previousKey}` : ''}[${index}]`
-			urlParams = _parseParams(value, urlParams, key);
+			urlParams = parseObject(value, urlParams, key);
 		})
 		return urlParams;
 	}
@@ -62,7 +62,8 @@ function _parseParams (
  * @returns {string}
  */
 export function parseParams<T extends Record<string, any>>(paramValues: T): string {
-	const params = _parseParams(paramValues)
-	.toString()
+	const searchParams = parseObject(paramValues);
+	searchParams.sort();
+	const params = searchParams.toString()
 	return `${params ? '?' : ''}${params}`
 }

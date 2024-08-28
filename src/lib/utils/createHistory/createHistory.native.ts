@@ -1,7 +1,5 @@
 import { BackHandler } from 'react-native';
 
-import { ORIGIN } from '../constants';
-
 import { type NavigationActionType, type NavigationState } from './HistoryType';
 
 type HistoryEvent = NavigationState;
@@ -22,6 +20,8 @@ export type NavigateConfig = {
 	 */
 	stack?: boolean
 };
+
+const ORIGIN = 'http://localhost';
 
 function createHistory() {
 	const state: NavigationState = {

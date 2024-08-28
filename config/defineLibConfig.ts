@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import deepmerge from '@fastify/deepmerge'
-import { defineConfig, type UserConfigExport } from 'vite'
+import { defineConfig, type UserConfig, type UserConfigExport } from 'vite'
 import banner from 'vite-plugin-banner'
 import { checker } from 'vite-plugin-checker'
 import dts from 'vite-plugin-dts'
@@ -90,5 +91,5 @@ export const defineLibConfig = (
 				afterBuild
 			})
 		]
-	}
+	} as UserConfig
 ));

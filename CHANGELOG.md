@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/resourge/history-store/compare/v1.1.0...v1.2.0) (2024-08-28)
+
+
+### Features
+
+* **parseparams:** add sort to parseParams ([eb3bd39](https://github.com/resourge/history-store/commit/eb3bd391b5e15cd93b2a382c0e3b7b6f32d61086))
+
 # [1.1.0](https://github.com/resourge/history-store/compare/v1.0.3...v1.1.0) (2024-08-28)
 
 

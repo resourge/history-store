@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/resourge/history-store/compare/v1.2.1...v1.3.0) (2024-08-28)
+
+
+### Features
+
+* **index.native:** export History ([ebae9c9](https://github.com/resourge/history-store/commit/ebae9c9682b7f0c6baf4a7f2746002100eada492))
+
 ## [1.2.1](https://github.com/resourge/history-store/compare/v1.2.0...v1.2.1) (2024-08-28)
 
 

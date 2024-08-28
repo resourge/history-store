@@ -1,6 +1,6 @@
 {
 	"name": "@resourge/history-store",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"react-native": "./dist/index.native.js",

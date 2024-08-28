@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/resourge/history-store/compare/v1.2.0...v1.2.1) (2024-08-28)
+
+
+### Bug Fixes
+
+* **package.json:** add react-native ([45b7b85](https://github.com/resourge/history-store/commit/45b7b85a1d9be55376051f327b1567d3b37d815a))
+
 # [1.2.0](https://github.com/resourge/history-store/compare/v1.1.0...v1.2.0) (2024-08-28)
 
 

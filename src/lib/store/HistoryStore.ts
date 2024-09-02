@@ -1,12 +1,13 @@
-import { type UrlChangeEvent } from '../utils/index';
-import { initiateNavigationEvents } from '../utils/initiateNavigationEvents';
-import { type ActionType, EVENTS } from '../utils/navigationEvents/Events';
+import { type UrlChangeEvent } from '../browser'
+import { initiateNavigationEvents } from '../browser/initiateNavigationEvents';
+import { EVENTS } from '../types/navigationActionType/BaseNavigationActionType';
+import { type NavigationActionType } from '../types/navigationActionType/NavigationActionType';
 
 export type NavigateOptions = {
 	/**
 	 * A way to specify the action
 	 */
-	action?: Exclude<ActionType, 'initial'>
+	action?: Exclude<NavigationActionType, 'initial'>
 	/**
 	 * Replaces path instead of push
 	 * @default false
@@ -16,10 +17,10 @@ export type NavigateOptions = {
 
 export type StoreValue = [
 	url: URL, 
-	action: ActionType, 
+	action: NavigationActionType, 
 	previousValue?: [
 		url: URL, 
-		action: ActionType, 
+		action: NavigationActionType, 
 	]
 ]
 

@@ -1,6 +1,6 @@
-import { type NavigationActionType } from '../utils/createHistory/HistoryType';
-import { History, type NavigateConfig } from '../utils/createHistory/createHistory.native';
-import { EVENTS } from '../utils/navigationEvents/Events';
+import { History, type NavigateConfig } from '../native/createHistory/createHistory.native';
+import { EVENTS } from '../types/navigationActionType/BaseNavigationActionType';
+import { type NavigationActionType } from '../types/navigationActionType/NavigationActionType.native';
 
 export type NavigateOptions = NavigateConfig;
 

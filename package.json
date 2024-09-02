@@ -33,6 +33,9 @@
 		},
 		"./mobile": {
 			"default": "./dist/index.native.js"
+		},
+		"./utils": {
+			"default": "./dist/index.utils.js"
 		}
 	},
 	"typesVersions": {
@@ -42,6 +45,9 @@
 			],
 			"mobile": [
 				"./dist/index.native.d.ts"
+			],
+			"utils": [
+				"./dist/index.utils.d.ts"
 			]
 		}
 	},

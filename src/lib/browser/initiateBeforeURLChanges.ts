@@ -1,19 +1,22 @@
 import {
-	EVENTS,
-	pushState,
-	replaceState,
-	UrlChangeEvent,
-	BeforeUrlChangeEvent,
-	go,
 	back,
+	beforeunload,
+	EVENTS,
+	EVENTS_KEYS,
 	forward,
+	go,
 	popState,
+	pushState,
+	replaceState
+} from '../types/navigationActionType/BaseNavigationActionType'
+
+import {
+	BeforeUrlChangeEvent,
 	eventBeforeUrlChange,
 	eventURLChange,
-	setLastURLChangeEvent,
 	getLastURLChangeEvent,
-	EVENTS_KEYS,
-	beforeunload
+	setLastURLChangeEvent,
+	UrlChangeEvent
 } from './navigationEvents/Events'
 
 /**

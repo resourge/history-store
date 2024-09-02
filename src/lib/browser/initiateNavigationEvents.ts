@@ -1,10 +1,7 @@
+import { pushState, replaceState } from '../types/navigationActionType/BaseNavigationActionType';
+
 import { getAction, initiateBeforeURLChanges } from './initiateBeforeURLChanges';
-import {
-	pushState,
-	replaceState,
-	setLastURLChangeEvent,
-	UrlChangeEvent
-} from './navigationEvents/Events'
+import { setLastURLChangeEvent, UrlChangeEvent } from './navigationEvents/Events';
 
 /**
  * Initiate some event's to catch {@link URL} changes.

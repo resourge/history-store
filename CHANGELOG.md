@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/resourge/history-store/compare/v1.3.1...v1.3.2) (2024-09-02)
+
+
+### Bug Fixes
+
+* **react-native:** fix using in react-native ([29fdf43](https://github.com/resourge/history-store/commit/29fdf4304e7f09a01a84501e782e5971605aaabf))
+
 ## [1.3.1](https://github.com/resourge/history-store/compare/v1.3.0...v1.3.1) (2024-08-28)
 
 

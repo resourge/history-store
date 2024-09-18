@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/resourge/history-store/compare/v1.3.2...v1.3.3) (2024-09-18)
+
+
+### Performance Improvements
+
+* **project:** optimize code, improve readability and reduce code ([7ca528a](https://github.com/resourge/history-store/commit/7ca528ab1ad1533807a5a813961c37a1baa45623))
+
 ## [1.3.2](https://github.com/resourge/history-store/compare/v1.3.1...v1.3.2) (2024-09-02)
 
 

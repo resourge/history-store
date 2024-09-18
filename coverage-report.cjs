@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const coverageDir = path.join(__dirname, 'coverage');
-const coverageSummaryFile = path.join(coverageDir, 'coverage-summary.json');
+const coverageSummaryFile = path.join(coverageDir, 'coverage-final.json');
 
 // Load and parse coverage data
 const coverageData = JSON.parse(fs.readFileSync(coverageSummaryFile, 'utf-8'));

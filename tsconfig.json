@@ -32,9 +32,7 @@
 	"include": [
 		"./**/src/**/*",
 		".eslintrc.cjs",
-		"rollup.config.js",
-		"babel.config.js",
-		"jest.config.js"
+		"rollup.config.js"
 	],
 	"exclude": [
 		"./**/dist/**/*",

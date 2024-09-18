@@ -1,4 +1,5 @@
 name: Coverage
+
 on:
   pull_request:
     branches:
@@ -6,27 +7,53 @@ on:
 
 jobs:
   coverage:
-    permissions:
-      checks: write
-      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16' # Specify your Node.js version here
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run Vitest with coverage
-        run: npm run coverage # Make sure this script generates a coverage report
-      
+      - name: Run Vitest and generate coverage report
+        run: npm test -- --coverage
+
+      - name: Generate coverage comment
+        run: |
+          npm run coverage-report
+        id: generate_comment
+
+      - name: Post coverage comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('coverage-comment.txt', 'utf-8');
+            
+            // Post the comment on the pull request
+            const { data: pullRequest } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
-          name: coverage
-          path: coverage # This assumes that the coverage report is in the `coverage` directory
+          name: coverage-report
+          path: coverage
+

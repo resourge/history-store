@@ -1,3 +1,3 @@
-import { type BaseNavigationActionType } from './BaseNavigationActionType'
+import { type BaseNavigationActionType } from './BaseNavigationActionType';
 
-export type NavigationActionType = BaseNavigationActionType
+export type NavigationActionType = BaseNavigationActionType;

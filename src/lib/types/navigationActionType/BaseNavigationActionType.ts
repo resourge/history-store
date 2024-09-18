@@ -1,10 +1,10 @@
-export const popState = 'popstate'
-export const pushState = 'pushState'
-export const replaceState = 'replaceState'
-export const go = 'go'
-export const back = 'back'
-export const forward = 'forward'
-export const beforeunload = 'beforeunload'
+export const popState = 'popstate';
+export const pushState = 'pushState';
+export const replaceState = 'replaceState';
+export const go = 'go';
+export const back = 'back';
+export const forward = 'forward';
+export const beforeunload = 'beforeunload';
 
 export const EVENTS = {
 	[popState]: 'pop',
@@ -15,8 +15,8 @@ export const EVENTS = {
 	[forward]: forward,
 	initial: 'initial',
 	[beforeunload]: 'beforeunload'
-} as const
+} as const;
 
-export const EVENTS_KEYS = Object.keys(EVENTS)
+export const EVENTS_KEYS = Object.keys(EVENTS);
 
-export type BaseNavigationActionType = typeof EVENTS[keyof typeof EVENTS]
+export type BaseNavigationActionType = typeof EVENTS[keyof typeof EVENTS];

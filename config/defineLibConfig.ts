@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import deepmerge from '@fastify/deepmerge'
+import cleanup from 'rollup-plugin-cleanup';
 import { defineConfig, type UserConfig, type UserConfigExport } from 'vite'
 import banner from 'vite-plugin-banner'
 import { checker } from 'vite-plugin-checker'
@@ -65,7 +66,12 @@ export const defineLibConfig = (
 					entryFileNames: '[name].js' // Ensures main file name does not have an extension
 					// chunkFileNames: (chunkInfo) => chunkInfo.name.split('lib/')[1]
 				},
-				external
+				external,
+				plugins: [
+					cleanup({
+						extensions: ['js', 'jsx', 'mjs', 'ts', 'tsx']
+					})
+				]
 			}
 		},
 		plugins: [

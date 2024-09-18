@@ -1,18 +1,16 @@
 import { type NavigationActionType } from '../../types/navigationActionType/NavigationActionType';
 
-export const eventURLChange = 'URLChange' as const;
-export const eventBeforeUrlChange = 'beforeURLChange' as const;
+export const eventURLChange = 'URLChange';
+export const eventBeforeUrlChange = 'beforeURLChange';
 
 // eslint-disable-next-line prefer-const
 let _lastURLChangeEvent: UrlChangeEvent | null = null;
 
 export const setLastURLChangeEvent = (lastURLChangeEvent: UrlChangeEvent | null) => {
 	_lastURLChangeEvent = lastURLChangeEvent;
-}
+};
 
-export const getLastURLChangeEvent = () => {
-	return _lastURLChangeEvent
-}
+export const getLastURLChangeEvent = () => _lastURLChangeEvent;
 
 export class UrlChangeEvent extends Event {
 	constructor(

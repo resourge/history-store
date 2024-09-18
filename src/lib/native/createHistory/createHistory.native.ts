@@ -49,7 +49,7 @@ function createHistory() {
 				action: current.action,
 				url: current.url
 			}
-		}
+		};
 		switch ( current.action ) {
 			case 'push':
 				if ( history.length >= 100 ) {
@@ -70,7 +70,7 @@ function createHistory() {
 				}
 				break;
 			case 'pop':
-				history.splice(-1);
+				history.pop();
 				break;
 		}
 		
@@ -109,10 +109,9 @@ function createHistory() {
 			action: 'push'
 		}
 	) {
-		const isReplace = config.replace ?? false;
-		const action = config.action ?? 
-			(
-				isReplace 
+		const action = config.action 
+			?? (
+				config.replace 
 					? 'replace' 
 					: 'push'
 			);
@@ -144,15 +143,13 @@ function createHistory() {
 		}
 	}
 
-	BackHandler.addEventListener('hardwareBackPress', () => {
-		return navigateBack();
-	});
+	BackHandler.addEventListener('hardwareBackPress', () => navigateBack());
 
 	function addEventListener<K extends keyof NavigationType>(key: K, cb: NavigationType[K]) {
 		events[key].push(cb);
 
 		return () => {
-			const index = events[key].findIndex((event) => event === cb);
+			const index = events[key].indexOf(cb);
 
 			if ( index > -1 ) {
 				events[key].splice(index, 1);

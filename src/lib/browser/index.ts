@@ -3,4 +3,4 @@ export {
 	UrlChangeEvent,
 	eventBeforeUrlChange,
 	eventURLChange
-} from './navigationEvents/Events'
+} from './navigationEvents/Events';

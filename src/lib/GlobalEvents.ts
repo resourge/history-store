@@ -3,7 +3,7 @@ import {
 	type BeforeUrlChangeEvent,
 	type eventURLChange,
 	type UrlChangeEvent
-} from './browser/index'
+} from './browser/index';
 
 declare global {
 	interface Window { 

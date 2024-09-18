@@ -1,14 +1,32 @@
-name: 'coverage'
+name: Coverage
 on:
-    pull_request:
-        branches:
-            - master
+  pull_request:
+    branches:
+      - master
+
 jobs:
-    coverage:
-        permissions:
-          checks: write
-          pull-requests: write
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v1
-            - uses: ArtiomTr/jest-coverage-report-action@v2
+  coverage:
+    permissions:
+      checks: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Specify your Node.js version here
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Vitest with coverage
+        run: npm run test:coverage # Make sure this script generates a coverage report
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage # This assumes that the coverage report is in the `coverage` directory

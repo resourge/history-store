@@ -62,7 +62,7 @@
 		"test:watch": "vitest",
 		"coverage": "vitest run --coverage",
 		"semantic-release": "semantic-release",
-		"coverage-report": "node coverage-report.js"
+		"coverage-report": "node coverage-report.cjs"
 	},
 	"peerDependencies": {
 		"react-native": "*",

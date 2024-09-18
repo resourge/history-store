@@ -33,7 +33,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const comment = fs.readFileSync('coverage-comment.txt', 'utf-8');
+            const comment = fs.readFileSync('coverage-comment.md', 'utf-8');
             
             // Post the comment on the pull request
             const { data: pullRequest } = await github.rest.pulls.get({

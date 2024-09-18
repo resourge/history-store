@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import deepmerge from '@fastify/deepmerge'
-import { defineConfig, type UserConfigExport } from 'vite'
+import cleanup from 'rollup-plugin-cleanup';
+import { defineConfig, type UserConfig, type UserConfigExport } from 'vite'
 import banner from 'vite-plugin-banner'
 import { checker } from 'vite-plugin-checker'
 import dts from 'vite-plugin-dts'
@@ -24,6 +26,7 @@ const external = Array.from(
 
 const entryLib = './src/lib/index.ts';
 const entryNativeLib = './src/lib/index.native.ts';
+const entryUtilsLib = './src/lib/index.utils.ts';
 
 const deepMerge = deepmerge();
 
@@ -46,7 +49,8 @@ export const defineLibConfig = (
 			lib: {
 				entry: {
 					index: entryLib,
-					'index.native': entryNativeLib
+					'index.native': entryNativeLib,
+					'index.utils': entryUtilsLib
 				},
 				name: 'index',
 				fileName: 'index',
@@ -54,15 +58,20 @@ export const defineLibConfig = (
 			},
 			sourcemap: true,
 			outDir: './dist',
-			rollupOptions: {		
+			rollupOptions: {
 				output: {
 					dir: './dist',
 					inlineDynamicImports: false,
 					preserveModules: true,
-					entryFileNames: '[name].js',
-					chunkFileNames: (chunkInfo) => chunkInfo.name.split('lib/')[1]
+					entryFileNames: '[name].js' // Ensures main file name does not have an extension
+					// chunkFileNames: (chunkInfo) => chunkInfo.name.split('lib/')[1]
 				},
-				external
+				external,
+				plugins: [
+					cleanup({
+						extensions: ['js', 'jsx', 'mjs', 'ts', 'tsx']
+					})
+				]
 			}
 		},
 		plugins: [
@@ -88,7 +97,18 @@ export const defineLibConfig = (
 					'./src/setupTests.ts'
 				],
 				afterBuild
-			})
+			}),
+			{
+				name: 'remove-file-extensions',
+				generateBundle(_, bundle) {
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					for (const [_, value] of Object.entries(bundle)) {
+						if (value.type === 'chunk') {
+							value.code = value.code.replace(/(?<=import\s+.*?['"])([^'"]+)\.js(?=['"])/g, '$1');
+						}
+					}
+				}
+			}
 		]
-	}
+	} as UserConfig
 ));

@@ -1,10 +1,4 @@
 /**
- * Check if value is a valid date
- */
-function isValidDate(value: any): boolean {
-	return value instanceof Date && !isNaN(value as any);
-}
-/**
  * Checks if param value is date
  * @param paramValue {string}
  * @returns {boolean}
@@ -12,7 +6,7 @@ function isValidDate(value: any): boolean {
 function isIsoDate(paramValue: string): boolean {
 	if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(paramValue)) return false;
 	const d = new Date(paramValue); 
-	return isValidDate(d) && d.toISOString() === paramValue;
+	return d instanceof Date && !isNaN(d as any) && d.toISOString() === paramValue;
 }
 
 /**
@@ -22,10 +16,7 @@ function isIsoDate(paramValue: string): boolean {
  * @returns {boolean}
  */
 function isNumeric(paramValue: string | number): boolean {
-	if ( typeof paramValue === 'number' ) {
-		return true;
-	}
-	return /^[-]?([1-9]\d*|0)(\.\d+)?$/.test(paramValue)
+	return typeof paramValue === 'number' || /^[-]?([1-9]\d*|0)(\.\d+)?$/.test(paramValue);
 }
 
 /**
@@ -36,20 +27,15 @@ function decoder(paramValue: any) {
 	if ( isNumeric(paramValue) ) {
 		return parseFloat(paramValue);
 	}
-	else if ( paramValue === 'true' ) {
+	if ( paramValue === 'true' ) {
 		return true;
 	}
-	else if ( paramValue === 'false' ) {
+	if ( paramValue === 'false' ) {
 		return false;
 	}
-	else {
-		const decodedValue = decodeURI(paramValue);
-		if ( isIsoDate(decodedValue) ) {
-			return new Date(decodedValue);
-		}
-	}
-
-	return paramValue;
+	
+	const decodedValue = decodeURI(paramValue);
+	return isIsoDate(decodedValue) ? new Date(decodedValue) : paramValue;
 }
 
 /**
@@ -58,11 +44,8 @@ function decoder(paramValue: any) {
  * @returns {string|number}
  */
 function getKey (key: number | string): number | string {
-	const intKey = parseInt(key as string)
-	if (intKey.toString() === key) {
-		return intKey
-	}
-	return key
+	const intKey = parseInt(key as string);
+	return intKey.toString() === key ? intKey : key;
 }
 
 /**
@@ -77,16 +60,14 @@ function createNestedObject (
 	value: any
 ) {
 	const lastName = getKey(names.pop() ?? '');
-
-	for ( let i = 0; i < names.length; i++ ) {
-		const key = getKey(names[i])
+	names.forEach((name, i) => {
+		const key = getKey(name);
 		const nextKey = getKey(names[i + 1] ?? lastName);
-
-		base = base[key] = base[key] || (nextKey != null && typeof nextKey === 'number' ? [] : { });
-	}
+		base = base[key] = base[key] || (typeof nextKey === 'number' ? [] : {});
+	});
 
 	if ( lastName != null ) {
-		base[lastName] = value
+		base[lastName] = value;
 	}
 }
 
@@ -102,15 +83,10 @@ export function parseSearchParams<T extends Record<string, any>>(
 ): T {
 	// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 	const result: T = {} as T;
-	const entries = searchParams.entries()
+	for (const [key, _value] of searchParams.entries()) {
+		const value = decoder(_value);
 
-	for (const [key, _value] of entries) {
-		const value = decoder(_value)
-
-		const isObject = key.includes('.');
-		const isArray = key.includes('[');
-
-		if ( isObject || isArray ) {
+		if ( key.includes('.') || key.includes('[') ) {
 			const arrKey = key
 			.replace(/\[/g, '.')
 			.replace(/\]/g, '')
@@ -120,7 +96,7 @@ export function parseSearchParams<T extends Record<string, any>>(
 				result,
 				arrKey,
 				value
-			)
+			);
 
 			continue;
 		}
@@ -130,7 +106,7 @@ export function parseSearchParams<T extends Record<string, any>>(
 	return {
 		...defaultParams,
 		...result
-	}
+	};
 }
 
 /**
@@ -143,5 +119,5 @@ export function parseSearch<T extends Record<string, any>>(
 	search: string, 
 	defaultParams: T = {} as unknown as T
 ): T {
-	return parseSearchParams(new URLSearchParams(search), defaultParams)
+	return parseSearchParams(new URLSearchParams(search), defaultParams);
 }

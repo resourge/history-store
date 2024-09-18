@@ -1,3 +1,38 @@
+## [1.3.3](https://github.com/resourge/history-store/compare/v1.3.2...v1.3.3) (2024-09-18)
+
+
+### Performance Improvements
+
+* **project:** optimize code, improve readability and reduce code ([7ca528a](https://github.com/resourge/history-store/commit/7ca528ab1ad1533807a5a813961c37a1baa45623))
+
+## [1.3.2](https://github.com/resourge/history-store/compare/v1.3.1...v1.3.2) (2024-09-02)
+
+
+### Bug Fixes
+
+* **react-native:** fix using in react-native ([29fdf43](https://github.com/resourge/history-store/commit/29fdf4304e7f09a01a84501e782e5971605aaabf))
+
+## [1.3.1](https://github.com/resourge/history-store/compare/v1.3.0...v1.3.1) (2024-08-28)
+
+
+### Bug Fixes
+
+* **index.native:** add missing types to export ([43fd400](https://github.com/resourge/history-store/commit/43fd40039a944b465222785f1cb3857e03f00004))
+
+# [1.3.0](https://github.com/resourge/history-store/compare/v1.2.1...v1.3.0) (2024-08-28)
+
+
+### Features
+
+* **index.native:** export History ([ebae9c9](https://github.com/resourge/history-store/commit/ebae9c9682b7f0c6baf4a7f2746002100eada492))
+
+## [1.2.1](https://github.com/resourge/history-store/compare/v1.2.0...v1.2.1) (2024-08-28)
+
+
+### Bug Fixes
+
+* **package.json:** add react-native ([45b7b85](https://github.com/resourge/history-store/commit/45b7b85a1d9be55376051f327b1567d3b37d815a))
+
 # [1.2.0](https://github.com/resourge/history-store/compare/v1.1.0...v1.2.0) (2024-08-28)
 
 

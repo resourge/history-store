@@ -1,9 +1,9 @@
 import './GlobalEvents';
 
+export type { NavigationActionType } from './types/index';
 export {
-	type ActionType, BeforeUrlChangeEvent, UrlChangeEvent, createNewUrlWithSearch,
-	eventBeforeUrlChange, eventURLChange, parseParams, parseSearch, parseSearchParams
-} from './utils/index';
+	BeforeUrlChangeEvent, UrlChangeEvent, eventBeforeUrlChange, eventURLChange
+} from './browser/index';
 export {
 	default as HistoryStore,
 	type StoreValue,

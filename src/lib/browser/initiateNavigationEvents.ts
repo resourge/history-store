@@ -1,10 +1,7 @@
+import { pushState, replaceState } from '../types/navigationActionType/BaseNavigationActionType';
+
 import { getAction, initiateBeforeURLChanges } from './initiateBeforeURLChanges';
-import {
-	pushState,
-	replaceState,
-	setLastURLChangeEvent,
-	UrlChangeEvent
-} from './navigationEvents/Events'
+import { setLastURLChangeEvent, UrlChangeEvent } from './navigationEvents/Events';
 
 /**
  * Initiate some event's to catch {@link URL} changes.
@@ -18,24 +15,20 @@ export const initiateNavigationEvents = () => {
 	 * @see https://stackoverflow.com/a/4585031
 	 */
 	if (typeof window.history !== 'undefined') {
-		for (const _type of [pushState, replaceState]) {
-			const type = _type as keyof Pick<History, 'pushState' | 'replaceState'>;
+		[pushState, replaceState].forEach((method) => {
+			const type = method as keyof Pick<History, 'pushState' | 'replaceState'>;
 			const original = window.history[type];
 		
 			window.history[type] = function (...args) {
 				// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 				const result = original.apply(this, args);
-
 				const action = getAction(args[0], type);
-
-				const urlArg = args[2];
-
-				const url = urlArg 
+				const url = args[2] 
 					? (
-						typeof urlArg === 'string' 
-							? new URL(urlArg, window.location.origin) 
-							: urlArg
-					) : new URL(window.location.href)
+						typeof args[2] === 'string' 
+							? new URL(args[2], window.location.origin) 
+							: args[2]
+					) : new URL(window.location.href);
 				
 				const event = new UrlChangeEvent(action, url);
 				setLastURLChangeEvent(event);
@@ -43,13 +36,13 @@ export const initiateNavigationEvents = () => {
 
 				return result;
 			};
-		}
+		});
 
 		Object.defineProperty(window, 'resourge_history', {
 			value: 'resourge_history',
 			writable: false
-		})
+		});
 
 		initiateBeforeURLChanges();
 	}
-}
+};

@@ -4,7 +4,7 @@
  * @returns {boolean}
  */
 function isObject(obj: any): boolean {
-	return Object.prototype.toString.call(obj) === '[object Object]'
+	return Object.prototype.toString.call(obj) === '[object Object]';
 }
 
 /**
@@ -13,16 +13,16 @@ function isObject(obj: any): boolean {
  * @returns {boolean}
  */
 function toIgnore(value: any): boolean {
-	return typeof value === 'function' ||
-		value instanceof Map ||
-		value instanceof Set ||
-		value === undefined
+	return typeof value === 'function'
+		|| value instanceof Map
+		|| value instanceof Set
+		|| value === undefined;
 }
 
 function parseObject (
 	state: any, 
-	urlParams = new URLSearchParams(),
-	previousKey = ''
+	urlParams: URLSearchParams,
+	previousKey: string
 ) {
 	if ( toIgnore(state) ) {
 		return urlParams;
@@ -31,27 +31,25 @@ function parseObject (
 	if ( isObject(state) ) {
 		Object.keys(state)
 		.forEach((_key) => {
-			const key = `${previousKey ? `${previousKey}.` : ''}${_key}`
-			const value = state[_key];
-
-			urlParams = parseObject(value, urlParams, key);
-		})
-		return urlParams;
+			parseObject(
+				state[_key], 
+				urlParams, 
+				`${previousKey ? `${previousKey}.` : ''}${_key}`
+			);
+		});
 	}
-	
-	if ( Array.isArray(state) ) {
+	else if ( Array.isArray(state) ) {
 		state.forEach((value, index) => {
-			const key = `${previousKey ? `${previousKey}` : ''}[${index}]`
-			urlParams = parseObject(value, urlParams, key);
-		})
-		return urlParams;
+			parseObject(
+				value, 
+				urlParams, 
+				`${previousKey ? `${previousKey}` : ''}[${index}]`
+			);
+		});
 	}
-
-	if ( state instanceof Date ) {
-		state = state.toISOString();
+	else {
+		urlParams.append(previousKey, state instanceof Date ? state.toISOString() : state);
 	}
-
-	urlParams.append(previousKey, state)
 
 	return urlParams;
 }
@@ -59,11 +57,19 @@ function parseObject (
 /**
  * Convert params into a search string.
  * @param paramValues
+ * @param prefixKey - prefix key for searchParams object
  * @returns {string}
  */
-export function parseParams<T extends Record<string, any>>(paramValues: T): string {
-	const searchParams = parseObject(paramValues);
+export function parseParams<T extends Record<string, any>>(
+	paramValues: T,
+	prefixKey: string = ''
+): string {
+	const searchParams = parseObject(
+		paramValues,
+		new URLSearchParams(),
+		prefixKey
+	);
 	searchParams.sort();
-	const params = searchParams.toString()
-	return `${params ? '?' : ''}${params}`
+	const params = searchParams.toString();
+	return params ? `?${params}` : '';
 }

@@ -1,6 +1,7 @@
+
 it('App', () => {
 	expect(true).toBeTruthy();
-});
+
 
 /*
 const object1 = {

@@ -1,5 +1,6 @@
 /**
- * Create {@link URL} updating search with newSearch
+ * Creates a new {@link URL} with updated search parameters.
+ * Optionally updates the hash if the hash flag is true.
  */
 export const createNewUrlWithSearch = (
 	url: URL, 
@@ -8,20 +9,14 @@ export const createNewUrlWithSearch = (
 ): URL => {
 	const _url = new URL(url);
 	
-	if ( hash ) {
-		const hashUrl = _url.hash.substring(1, _url.hash.length);
-
-		const newPath = new URL(hashUrl, window.location.origin);
-		newPath.search = newSearch;
-
-		_url.hash = _url.hash 
-			? _url.hash.replace(hashUrl, newPath.href.replace(newPath.origin, '')) 
-			: newPath.href.replace(newPath.origin, '');
-
-		return _url
+	if (hash && _url.hash) {
+		const hashUrl = new URL(_url.hash.slice(1), window.location.origin);
+		hashUrl.search = newSearch;
+		_url.hash = `#${hashUrl.href.replace(hashUrl.origin, '')}`;
 	}
-
-	_url.search = newSearch;
+	else {
+		_url.search = newSearch;
+	}
 	
 	return _url;
-}
+};

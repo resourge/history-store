@@ -44,7 +44,10 @@ npm install @resourge/history-store react-native-url-polyfill --save
 To start using `@resourge/history-store`, simply import and interact with the `HistoryStore` instance:
 
 ```jsx
+// Browser
 import { HistoryStore } from '@resourge/history-store';
+// react-native
+// import { HistoryStore } from '@resourge/history-store/mobile';
 
 // Subscribe to URL changes
 const unsubscribe = HistoryStore.subscribe(() => {
@@ -118,6 +121,7 @@ Creates a new URL instance with an updated search string. Optionally updates the
 	- `hash`: If `true`, updates the URL hash with the new search string.
 
 ```typescript
+import { createNewUrlWithSearch } from '@resourge/history-store/utils';
 const newUrl = createNewUrlWithSearch(new URL('/path', window.location.origin), 'foo=bar', true);
 ```
 
@@ -129,6 +133,7 @@ Converts parameters into a search string.
 	- `paramValues`: An object representing the parameters.
 
 ```typescript
+import { parseParams } from '@resourge/history-store/utils';
 const searchString = parseParams({ foo: 'bar', nested: { key: 'value' } });
 ```
 
@@ -141,6 +146,7 @@ Converts search parameters into an object with primitive values.
 	- `defaultParams`: Optional default parameters to merge with the parsed result.
 
 ```typescript
+import { parseSearchParams } from '@resourge/history-store/utils';
 const params = parseSearchParams(new URLSearchParams('foo=bar&nested[key]=value'));
 ```
 
@@ -153,6 +159,7 @@ Converts a search string into an object with primitive values.
 	- `defaultParams`: Optional default parameters to merge with the parsed result.
 
 ```typescript
+import { parseSearch } from '@resourge/history-store/utils';
 const params = parseSearch('?foo=bar&nested[key]=value');
 ```
 

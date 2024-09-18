@@ -2,10 +2,10 @@ import { setupURLPolyfill } from 'react-native-url-polyfill';
 
 setupURLPolyfill();
 
+export type { NavigationActionType } from './types/index.native';
 export {
-	type ActionType, BeforeUrlChangeEvent, UrlChangeEvent, createNewUrlWithSearch,
-	eventBeforeUrlChange, eventURLChange, parseParams, parseSearch, parseSearchParams
-} from './utils/index';
+	History, type NavigateConfig, type NavigationState
+} from './native/index.native';
 export {
 	default as HistoryStore,
 	type StoreValue,

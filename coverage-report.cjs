@@ -2,8 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Define the path to the coverage-summary.json
-const coverageDir = path.join(__dirname, 'coverage');
-const coverageSummaryFile = path.join(coverageDir, 'coverage-final.json');
+const coverageSummaryFile = path.join(__dirname, 'coverage', 'coverage-final.json');
 
 // Check if the file exists
 if (!fs.existsSync(coverageSummaryFile)) {
@@ -14,92 +13,57 @@ if (!fs.existsSync(coverageSummaryFile)) {
 // Load and parse coverage data
 const coverageData = JSON.parse(fs.readFileSync(coverageSummaryFile, 'utf-8'));
 
+// Helper to get the commit SHA
+const getCommitSha = () => process.env.GITHUB_SHA || 'unknown commit';
+
 // Function to generate coverage comment
 function generateCoverageComment(coverageData) {
-  let comment = '## Coverage report\n\n';
+  let comment = '## Coverage Report\n\n';
 
-  // Helper function to format paths for comments
-  function formatPath(filePath) {
-    return filePath.replace(/C:\\Personal\\history-store\\src\\/g, '').replace(/\\/g, '/');
+  // Initialize coverage totals
+  let statementsCovered = 0, statementsTotal = 0;
+  let branchesCovered = 0, branchesTotal = 0;
+  let functionsCovered = 0, functionsTotal = 0;
+
+  // Iterate through each file's coverage
+  for (const file in coverageData) {
+    const { s = {}, b = {}, f = {} } = coverageData[file];
+    const fileStatementsTotal = Object.keys(s).length;
+    const fileStatementsCovered = Object.values(s).filter(v => v > 0).length;
+    const fileBranchesTotal = Object.keys(b).length;
+    const fileBranchesCovered = Object.values(b).flat().filter(v => v > 0).length;
+    const fileFunctionsTotal = Object.keys(f).length;
+    const fileFunctionsCovered = Object.values(f).filter(v => v > 0).length;
+
+    // Update global totals
+    statementsTotal += fileStatementsTotal;
+    statementsCovered += fileStatementsCovered;
+    branchesTotal += fileBranchesTotal;
+    branchesCovered += fileBranchesCovered;
+    functionsTotal += fileFunctionsTotal;
+    functionsCovered += fileFunctionsCovered;
   }
 
-  // Initialize coverage details
-  let statementsCovered = 0;
-  let statementsTotal = 0;
-  let branchesCovered = 0;
-  let branchesTotal = 0;
-  let functionsCovered = 0;
-  let functionsTotal = 0;
-  let linesCovered = 0;
-  let linesTotal = 0;
+  // Calculate percentage
+  const percentage = (covered, total) => total > 0 ? ((covered / total) * 100).toFixed(2) : 'N/A';
 
-  // Check each file in the coverage summary
-  for (const filePath in coverageData) {
-    const fileCoverage = coverageData[filePath];
+  // Build the summary table
+  comment += `| Category   | Percentage | Covered / Total |\n`;
+  comment += `|------------|------------|-----------------|\n`;
+  comment += `| Statements | ${percentage(statementsCovered, statementsTotal)}% | ${statementsCovered} / ${statementsTotal} |\n`;
+  comment += `| Branches   | ${percentage(branchesCovered, branchesTotal)}% | ${branchesCovered} / ${branchesTotal} |\n`;
+  comment += `| Functions  | ${percentage(functionsCovered, functionsTotal)}% | ${functionsCovered} / ${functionsTotal} |\n`;
 
-    if (fileCoverage.all) {
-      const statements = fileCoverage.s || {};
-      const branches = fileCoverage.b || {};
-      const functions = fileCoverage.f || {};
-      const lines = fileCoverage.statementMap || {};
+  comment += `\n\n`; // Add failure message if applicable
 
-      // Update totals
-      const totalStatements = Object.keys(statements).length;
-      const coveredStatements = Object.values(statements).filter(v => v > 0).length;
-      const totalBranches = Object.keys(branches).length;
-      const coveredBranches = Object.values(branches).flat().filter(v => v > 0).length;
-      const totalFunctions = Object.keys(functions).length;
-      const coveredFunctions = Object.values(functions).filter(v => v > 0).length;
-      const totalLines = Object.keys(lines).length;
-      const coveredLines = Object.keys(lines).length; // Assuming all lines are covered if `all` is true
-
-      statementsTotal += totalStatements;
-      statementsCovered += coveredStatements;
-      branchesTotal += totalBranches;
-      branchesCovered += coveredBranches;
-      functionsTotal += totalFunctions;
-      functionsCovered += coveredFunctions;
-      linesTotal += totalLines;
-      linesCovered += coveredLines;
-    }
-  }
-
-  // Calculate percentages
-  const calcCoverage = (covered, total) => total > 0 ? ((covered / total) * 100).toFixed(2) : 0;
-  const statementCoverage = calcCoverage(statementsCovered, statementsTotal);
-  const branchCoverage = calcCoverage(branchesCovered, branchesTotal);
-  const functionCoverage = calcCoverage(functionsCovered, functionsTotal);
-  const lineCoverage = calcCoverage(linesCovered, linesTotal);
-
-  // Build the report
-  comment += `> [!CAUTION]\n> Test run failed\n\n`;
-  comment += `| <div title="Status of coverage:&#10; 🟢 - ok&#10; 🟡 - slightly more than threshold&#10; 🔴 - under the threshold">St.<sup>:grey_question:</sup></div> | Category | Percentage | Covered / Total |\n`;
-  comment += `| :-: | :- | :- | :-: |\n`;
-  comment += `| 🟢 | Statements | ${statementCoverage}% | ${statementsCovered}/${statementsTotal} |\n`;
-  comment += `| 🟢 | Branches | ${branchCoverage}% | ${branchesCovered}/${branchesTotal} |\n`;
-  comment += `| 🟢 | Functions | ${functionCoverage}% | ${functionsCovered}/${functionsTotal} |\n`;
-  comment += `| 🟢 | Lines | ${lineCoverage}% | ${linesCovered}/${linesTotal} |\n\n`;
-
-  // Placeholder for failed tests (if applicable)
-  comment += `## Test suite run failed\n\n`;
-  comment += `List of files failed...\n\n`;
-
-  // Function to get the commit SHA from the environment variable
-  function getCommitSha() {
-    return process.env.GITHUB_SHA || 'unknown commit';
-  }
-
-  // Add footer with the report action link
+  // Footer with commit SHA
   const commitSha = getCommitSha();
-  const footer = `<p align="right">Report generated by <a href="https://github.com/vitest-dev/vitest">🧪Vitest coverage report action</a> from ${commitSha}</p>`;
-
-  comment += footer;
+  comment += `<p align="right">Report generated by <a href="https://github.com/vitest-dev/vitest">🧪Vitest coverage report action</a> from commit ${commitSha}</p>\n`;
 
   return comment;
 }
 
-// Generate comment and write to file
+// Generate the comment and write to file
 const comment = generateCoverageComment(coverageData);
 fs.writeFileSync('coverage-comment.md', comment);
-
 console.log('Coverage comment generated successfully.');

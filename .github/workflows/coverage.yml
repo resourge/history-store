@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Run Vitest with coverage
-        run: npm run test:coverage # Make sure this script generates a coverage report
+        run: npm run coverage # Make sure this script generates a coverage report
       
       - name: Upload coverage report
         uses: actions/upload-artifact@v3

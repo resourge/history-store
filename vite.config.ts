@@ -13,7 +13,8 @@ export default defineLibConfig(
 		],
 		test: {
 			coverage: {
-				exclude: ['config', 'src/App.tsx', 'src/main.tsx', '.eslintrc.cjs', 'vite.config.ts']
+				include: ['src/lib'],
+				exclude: ['src/lib/index.native.ts', 'src/lib/index.utils.ts', 'src/lib/GlobalEvents.ts']
 			}
 		}
 	}),

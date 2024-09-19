@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 
-import react from '@vitejs/plugin-react'
-import fs from 'fs'
+import react from '@vitejs/plugin-react';
+import fs from 'fs';
 
 import { defineLibConfig } from './config/defineLibConfig';
 
@@ -10,7 +10,13 @@ export default defineLibConfig(
 	() => ({
 		plugins: [
 			react()
-		]
+		],
+		test: {
+			coverage: {
+				include: ['src/lib'],
+				exclude: ['src/lib/index.native.ts', 'src/lib/index.utils.ts', 'src/lib/GlobalEvents.ts']
+			}
+		}
 	}),
 	() => {
 		const indexDFilepath = './dist/index.d.ts';
@@ -19,4 +25,4 @@ export default defineLibConfig(
 
 		fs.writeFileSync(indexDFilepath, `${content}${globalEventsContent}`, 'utf-8');
 	}
-)
+);

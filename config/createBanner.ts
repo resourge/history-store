@@ -23,7 +23,6 @@ export function createBanner() {
 		...import.meta
 	}
 	const folderName = dirname(meta.url.replace('file://', ''))
-
 	const { name, version } = JSON.parse(
 		readFileSync(resolve(folderName, './package.json'), 'utf-8')
 	) as typeof PackageJson

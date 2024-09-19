@@ -61,7 +61,8 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"coverage": "vitest run --coverage",
-		"semantic-release": "semantic-release"
+		"semantic-release": "semantic-release",
+		"coverage-report": "node coverage-report.cjs"
 	},
 	"peerDependencies": {
 		"react-native": "*",
@@ -88,6 +89,7 @@
 		"@types/react": "^18.3.7",
 		"@types/react-dom": "^18.3.0",
 		"@vitejs/plugin-react": "^4.3.1",
+		"@vitest/coverage-v8": "^2.1.1",
 		"app-root-path": "^3.1.0",
 		"cross-env": "^7.0.3",
 		"cz-conventional-changelog": "^3.3.0",

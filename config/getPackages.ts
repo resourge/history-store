@@ -12,7 +12,6 @@ export const getWorkspaces = () => {
 	.filter((workspace) => !workspace.startsWith('!'))
 	.map((workspace) => {
 		const root = join(appRootPath.path, workspace.substring(1).replace(/\*/g, ''));
-
 		return readdirSync(
 			root, 
 			{

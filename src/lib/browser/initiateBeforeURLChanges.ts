@@ -116,6 +116,7 @@ export const initiateBeforeURLChanges = () => {
 		setLastURLChangeEvent(urlChangeEvent);
 		dispatchEvent(urlChangeEvent);
 	};
+	
 	window.addEventListener(popState, popStateCb, false);
 
 	window.addEventListener(beforeunload, (e) => {

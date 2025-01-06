@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/resourge/history-store/compare/v1.3.3...v1.3.4) (2025-01-06)
+
+
+### Bug Fixes
+
+* **initialbeforeurlchanges:** back triggers twice ([04885e7](https://github.com/resourge/history-store/commit/04885e7e70dfb63588890470cf4e06c11c926ae8))
+
 ## [1.3.3](https://github.com/resourge/history-store/compare/v1.3.2...v1.3.3) (2024-09-18)
 
 

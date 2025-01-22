@@ -1,3 +1,10 @@
+## [1.3.5](https://github.com/resourge/history-store/compare/v1.3.4...v1.3.5) (2025-01-22)
+
+
+### Bug Fixes
+
+* **historystore:** safe guard on window.location ([cad2562](https://github.com/resourge/history-store/commit/cad25625cff1d9f0636da704cc866e42401aaa47))
+
 ## [1.3.4](https://github.com/resourge/history-store/compare/v1.3.3...v1.3.4) (2025-01-06)
 
 

@@ -35,6 +35,9 @@ class HistoryStore {
 		if ( globalThis.window && !window.resourge_history ) {
 			initiateNavigationEvents();
 		}
+		if ( !globalThis.window ) {
+			return;
+		}
 		this.value = [
 			new URL(window.location.href), 
 			EVENTS.initial

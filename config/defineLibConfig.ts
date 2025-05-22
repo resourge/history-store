@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import deepmerge from '@fastify/deepmerge'
+import deepmerge from '@fastify/deepmerge';
 import cleanup from 'rollup-plugin-cleanup';
-import { defineConfig, type UserConfig, type UserConfigExport } from 'vite'
-import banner from 'vite-plugin-banner'
-import { checker } from 'vite-plugin-checker'
-import dts from 'vite-plugin-dts'
-import viteTsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig, type UserConfig, type UserConfigExport } from 'vite';
+import banner from 'vite-plugin-banner';
+import { checker } from 'vite-plugin-checker';
+import dts from 'vite-plugin-dts';
+import viteTsconfigPaths from 'vite-tsconfig-paths';
 
-import PackageJson from '../package.json'
+import PackageJson from '../package.json';
 
-import { createBanner } from './createBanner'
+import { createBanner } from './createBanner';
 
 const {
 	dependencies = {}, devDependencies = {}, peerDependencies = {}
@@ -22,7 +22,7 @@ const external = Array.from(
 		...Object.keys(dependencies),
 		...Object.keys(devDependencies)
 	]).values()
-)
+);
 
 const entryLib = './src/lib/index.ts';
 const entryNativeLib = './src/lib/index.native.ts';

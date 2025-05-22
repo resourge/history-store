@@ -42,7 +42,8 @@ class HistoryStore {
 			new URL(window.location.href), 
 			EVENTS.initial
 		];
-		window.addEventListener('URLChange', ({ url, action }: UrlChangeEvent) => {
+		
+		this.onUrlChange(({ url, action }: UrlChangeEvent) => {
 			const [currentUrl, currentAction] = this.value;
 
 			// Check if the URL or action has changed
@@ -58,6 +59,14 @@ class HistoryStore {
 				});
 			}
 		});
+	}
+	
+	public onUrlChange(cb: (state: UrlChangeEvent) => void) {
+		window.addEventListener('URLChange', cb);
+
+		return () => {
+			window.removeEventListener('URLChange', cb);
+		};
 	}
 
 	/**

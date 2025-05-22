@@ -1,3 +1,4 @@
+import { type NavigationState } from '../index.native';
 import { History, type NavigateConfig } from '../native/createHistory/createHistory.native';
 import { EVENTS } from '../types/navigationActionType/BaseNavigationActionType';
 import { type NavigationActionType } from '../types/navigationActionType/NavigationActionType.native';
@@ -23,7 +24,8 @@ class HistoryStore {
 			History.state.url, 
 			EVENTS.initial
 		];
-		History.addEventListener('URLChange', ({ url, action }) => {
+
+		this.onUrlChange(({ url, action }) => {
 			const [currentUrl, currentAction] = this.value;
 
 			// Check if the URL or action has changed.
@@ -39,6 +41,10 @@ class HistoryStore {
 				});
 			}
 		});
+	}
+
+	public onUrlChange(cb: (state: NavigationState) => void) {
+		return History.addEventListener('URLChange', cb);
 	}
 
 	/**

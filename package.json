@@ -29,7 +29,8 @@
 	},
 	"exports": {
 		".": {
-			"default": "./dist/index.js"
+			"default": "./dist/index.js",
+			"react-native": "./dist/index.native.js"
 		},
 		"./mobile": {
 			"default": "./dist/index.native.js"

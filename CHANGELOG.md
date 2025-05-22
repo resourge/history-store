@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/resourge/history-store/compare/v1.3.5...v1.4.0) (2025-05-22)
+
+
+### Features
+
+* **historystore:** add onUrlChange function ([9ff35fe](https://github.com/resourge/history-store/commit/9ff35fe12d80bf1ca64d4513d03fe978443167b2))
+
 ## [1.3.5](https://github.com/resourge/history-store/compare/v1.3.4...v1.3.5) (2025-01-22)
 
 

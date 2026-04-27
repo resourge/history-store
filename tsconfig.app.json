@@ -28,16 +28,16 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
-		"baseUrl": ".",
 		"paths": {
 			"src": [
 				"./src"
-			]
+			],
+			"*": ["./*"]
 		}
 	},
 	"include": [
 		"./**/src/**/*",
-		".eslintrc.cjs",
+		"eslint.config.ts",
 		"./config/*"
 	],
 	"exclude": [

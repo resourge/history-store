@@ -74,6 +74,9 @@ export const defineLibConfig = (
 				]
 			}
 		},
+		resolve: {
+			tsconfigPaths: true
+		},
 		plugins: [
 			banner(createBanner()),
 			viteTsconfigPaths(),
@@ -89,6 +92,9 @@ export const defineLibConfig = (
 			}),
 			dts({
 				insertTypesEntry: true,
+				compilerOptions: {
+					baseUrl: '.'
+				},
 
 				exclude: [
 					'**/*.test*',

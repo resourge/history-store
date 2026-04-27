@@ -1,6 +1,6 @@
 import {
-	type eventBeforeUrlChange,
 	type BeforeUrlChangeEvent,
+	type eventBeforeUrlChange,
 	type eventURLChange,
 	type UrlChangeEvent
 } from './browser/index';
@@ -9,9 +9,9 @@ declare global {
 	interface Window { 
 		resourge_history: string
 	}
-
-	function addEventListener(type: typeof eventBeforeUrlChange, listener: (e: BeforeUrlChangeEvent) => boolean | Promise<boolean>, options?: boolean | AddEventListenerOptions): void;
-	function addEventListener(type: typeof eventURLChange, listener: (e: UrlChangeEvent) => void, options?: boolean | AddEventListenerOptions): void;
+	
+	function addEventListener(type: typeof eventBeforeUrlChange, listener: (e: BeforeUrlChangeEvent) => boolean | Promise<boolean>, options?: AddEventListenerOptions | boolean): void;
+	function addEventListener(type: typeof eventURLChange, listener: (e: UrlChangeEvent) => void, options?: AddEventListenerOptions | boolean): void;
 	
 	function removeEventListener(type: typeof eventBeforeUrlChange, listener: (e: BeforeUrlChangeEvent) => boolean | Promise<boolean>, options?: boolean | EventListenerOptions): void;
 	function removeEventListener(type: typeof eventURLChange, listener: (e: UrlChangeEvent) => void, options?: boolean | EventListenerOptions): void;

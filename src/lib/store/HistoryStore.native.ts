@@ -25,7 +25,7 @@ class HistoryStore {
 			EVENTS.initial
 		];
 
-		this.onUrlChange(({ url, action }) => {
+		this.onUrlChange(({ action, url }) => {
 			const [currentUrl, currentAction] = this.value;
 
 			// Check if the URL or action has changed.
@@ -42,23 +42,6 @@ class HistoryStore {
 			}
 		});
 	}
-
-	public onUrlChange(cb: (state: NavigationState) => void) {
-		return History.addEventListener('URLChange', cb);
-	}
-
-	/**
-	 * Subscribe to URL changes.
-	 * @param notification - Callback to be called on URL changes.
-	 * @returns Unsubscribe function.
-	 */
-	public subscribe = (notification: () => void) => {
-		this.notification.add(notification);
-
-		return () => {
-			this.notification.delete(notification);
-		};
-	};
 
 	/**
 	 * Get the current value of the store.
@@ -80,7 +63,23 @@ class HistoryStore {
 	public navigate(url: URL, config?: NavigateConfig) {
 		History.navigate(url, config);
 	}
+
+	public onUrlChange(cb: (state: NavigationState) => void) {
+		return History.addEventListener('URLChange', cb);
+	}
+
+	/**
+	 * Subscribe to URL changes.
+	 * @param notification - Callback to be called on URL changes.
+	 * @returns Unsubscribe function.
+	 */
+	public subscribe = (notification: () => void) => {
+		this.notification.add(notification);
+
+		return () => {
+			this.notification.delete(notification);
+		};
+	};
 }
- 
-// eslint-disable-next-line import/no-anonymous-default-export
+
 export default new HistoryStore();

@@ -10,7 +10,7 @@ export const createNewUrlWithSearch = (
 	const _url = new URL(url);
 	
 	if (hash && _url.hash) {
-		const hashUrl = new URL(_url.hash.slice(1), window.location.origin);
+		const hashUrl = new URL(_url.hash.slice(1), globalThis.location.origin);
 		hashUrl.search = newSearch;
 		_url.hash = `#${hashUrl.href.replace(hashUrl.origin, '')}`;
 	}

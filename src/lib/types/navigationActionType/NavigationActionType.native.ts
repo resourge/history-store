@@ -1,1 +1,1 @@
-export type NavigationActionType = 'pop' | 'push' | 'replace' | 'initial' | 'stack';
+export type NavigationActionType = 'initial' | 'pop' | 'push' | 'replace' | 'stack';

@@ -7,14 +7,14 @@ export const forward = 'forward';
 export const beforeunload = 'beforeunload';
 
 export const EVENTS = {
+	[back]: back,
+	[beforeunload]: 'beforeunload',
+	[forward]: forward,
+	[go]: go,
+	initial: 'initial',
 	[popState]: 'pop',
 	[pushState]: 'push',
-	[replaceState]: 'replace',
-	[go]: go,
-	[back]: back,
-	[forward]: forward,
-	initial: 'initial',
-	[beforeunload]: 'beforeunload'
+	[replaceState]: 'replace'
 } as const;
 
 export const EVENTS_KEYS = Object.keys(EVENTS);

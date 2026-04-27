@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import deepmerge from '@fastify/deepmerge';
 import cleanup from 'rollup-plugin-cleanup';
 import { defineConfig, type UserConfig, type UserConfigExport } from 'vite';
@@ -32,66 +31,62 @@ const deepMerge = deepmerge();
 
 export const defineLibConfig = (
 	config: UserConfigExport,
-	afterBuild?: (() => void | Promise<void>)
+	afterBuild?: (() => Promise<void> | void)
 ): UserConfigExport => defineConfig((originalConfig) => deepMerge(
-	typeof config === 'function' ? config(originalConfig) : config,
+	typeof config === 'function'
+		? config(originalConfig)
+		: config,
 	{
-		define: originalConfig.mode !== 'production' ? {
-			__DEV__: (originalConfig.mode === 'development').toString()
-		} : {},
-		test: {
-			globals: true,
-			environment: 'jsdom',
-			setupFiles: './src/setupTests.ts'
-		},
 		build: {
-			minify: false,
 			lib: {
 				entry: {
-					index: entryLib,
+					'index': entryLib,
 					'index.native': entryNativeLib,
 					'index.utils': entryUtilsLib
 				},
-				name: 'index',
 				fileName: 'index',
-				formats: ['es']
+				formats: ['es'],
+				name: 'index'
 			},
-			sourcemap: true,
+			minify: false,
 			outDir: './dist',
 			rollupOptions: {
+				external,
 				output: {
 					dir: './dist',
+					entryFileNames: '[name].js', // Ensures main file name does not have an extension
 					inlineDynamicImports: false,
-					preserveModules: true,
-					entryFileNames: '[name].js' // Ensures main file name does not have an extension
+					preserveModules: true
 					// chunkFileNames: (chunkInfo) => chunkInfo.name.split('lib/')[1]
 				},
-				external,
 				plugins: [
 					cleanup({
 						extensions: ['js', 'jsx', 'mjs', 'ts', 'tsx']
 					})
 				]
-			}
+			},
+			sourcemap: true
 		},
-		resolve: {
-			tsconfigPaths: true
-		},
+		define: originalConfig.mode === 'production'
+			? {}
+			: {
+				__DEV__: (originalConfig.mode === 'development').toString()
+			},
 		plugins: [
 			banner(createBanner()),
 			viteTsconfigPaths(),
 			checker({ 
-				typescript: true,
 				enableBuild: true,
+				eslint: {
+					lintCommand: 'eslint "./src/**/*.{ts,tsx}"'
+				},
 				overlay: {
 					initialIsOpen: false
 				},
-				eslint: {
-					lintCommand: 'eslint "./src/**/*.{ts,tsx}"'
-				}
+				typescript: true
 			}),
 			dts({
-				insertTypesEntry: true,
+				afterBuild,
 				compilerOptions: {
 					baseUrl: '.'
 				},
@@ -102,19 +97,27 @@ export const defineLibConfig = (
 					'./src/main.tsx',
 					'./src/setupTests.ts'
 				],
-				afterBuild
+				insertTypesEntry: true
 			}),
 			{
-				name: 'remove-file-extensions',
 				generateBundle(_, bundle) {
 					// eslint-disable-next-line @typescript-eslint/no-unused-vars
 					for (const [_, value] of Object.entries(bundle)) {
 						if (value.type === 'chunk') {
-							value.code = value.code.replace(/(?<=import\s+.*?['"])([^'"]+)\.js(?=['"])/g, '$1');
+							value.code = value.code.replaceAll(/(?<=import\s+.*?['"])([^'"]+)\.js(?=['"])/g, '$1');
 						}
 					}
-				}
+				},
+				name: 'remove-file-extensions'
 			}
-		]
+		],
+		resolve: {
+			tsconfigPaths: true
+		},
+		test: {
+			environment: 'jsdom',
+			globals: true,
+			setupFiles: './src/setupTests.ts'
+		}
 	} as UserConfig
 ));

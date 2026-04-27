@@ -32,18 +32,18 @@ class HistoryStore {
 	constructor() {
 		// Checks if "resourge_history" was already initiated
 		// This is to prevent "resourge_history" from being initiated multiple times
-		if ( globalThis.window && !window.resourge_history ) {
+		if ( globalThis.window && !globalThis.window.resourge_history ) {
 			initiateNavigationEvents();
 		}
 		if ( !globalThis.window ) {
 			return;
 		}
 		this.value = [
-			new URL(window.location.href), 
+			new URL(globalThis.location.href), 
 			EVENTS.initial
 		];
 		
-		this.onUrlChange(({ url, action }: UrlChangeEvent) => {
+		this.onUrlChange(({ action, url }: UrlChangeEvent) => {
 			const [currentUrl, currentAction] = this.value;
 
 			// Check if the URL or action has changed
@@ -61,27 +61,6 @@ class HistoryStore {
 		});
 	}
 	
-	public onUrlChange(cb: (state: UrlChangeEvent) => void) {
-		window.addEventListener('URLChange', cb);
-
-		return () => {
-			window.removeEventListener('URLChange', cb);
-		};
-	}
-
-	/**
-	 * Subscribe to URL changes.
-	 * @param notification - Callback to be called on URL changes.
-	 * @returns Unsubscribe function.
-	 */
-	public subscribe = (notification: () => void) => {
-		this.notification.add(notification);
-
-		return () => {
-			this.notification.delete(notification);
-		};
-	};
-
 	/**
 	 * Get the current store value with proper URL types.
 	 * @returns The current store value.
@@ -99,17 +78,41 @@ class HistoryStore {
 	 * @param url - The target URL to navigate to.
 	 * @param options - Optional navigation configuration (action and replace).
 	 */
-	public navigate(url: URL, { replace, action }: NavigateOptions = {}) {
+	public navigate(url: URL, { action, replace }: NavigateOptions = {}) {
 	// Use the History API to push or replace the state
-		window.history[replace ? 'replaceState' : 'pushState'](
-			action ? {
-				action 
-			} : null, 
+		globalThis.history[replace
+			? 'replaceState'
+			: 'pushState'](
+			action
+				? {
+					action 
+				}
+				: null, 
 			'', 
 			url
 		);
 	}
+
+	public onUrlChange(cb: (state: UrlChangeEvent) => void) {
+		globalThis.addEventListener('URLChange', cb);
+
+		return () => {
+			globalThis.removeEventListener('URLChange', cb);
+		};
+	}
+
+	/**
+	 * Subscribe to URL changes.
+	 * @param notification - Callback to be called on URL changes.
+	 * @returns Unsubscribe function.
+	 */
+	public subscribe = (notification: () => void) => {
+		this.notification.add(notification);
+
+		return () => {
+			this.notification.delete(notification);
+		};
+	};
 }
- 
-// eslint-disable-next-line import/no-anonymous-default-export
+
 export default new HistoryStore();

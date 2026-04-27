@@ -2,24 +2,14 @@ import { type NavigationActionType } from '../../types/navigationActionType/Navi
 
 export const eventURLChange = 'URLChange';
 export const eventBeforeUrlChange = 'beforeURLChange';
+ 
+let _lastURLChangeEvent: null | UrlChangeEvent = null;
 
-// eslint-disable-next-line prefer-const
-let _lastURLChangeEvent: UrlChangeEvent | null = null;
-
-export const setLastURLChangeEvent = (lastURLChangeEvent: UrlChangeEvent | null) => {
+export const setLastURLChangeEvent = (lastURLChangeEvent: null | UrlChangeEvent) => {
 	_lastURLChangeEvent = lastURLChangeEvent;
 };
 
 export const getLastURLChangeEvent = () => _lastURLChangeEvent;
-
-export class UrlChangeEvent extends Event {
-	constructor(
-		public action: NavigationActionType,
-		public url: URL
-	) {
-		super(eventURLChange);
-	}
-}
 
 export class BeforeUrlChangeEvent extends Event {
 	constructor(
@@ -33,5 +23,14 @@ export class BeforeUrlChangeEvent extends Event {
 				cancelable: true 
 			}
 		);
+	}
+}
+
+export class UrlChangeEvent extends Event {
+	constructor(
+		public action: NavigationActionType,
+		public url: URL
+	) {
+		super(eventURLChange);
 	}
 }

@@ -1,6 +1,6 @@
 export {
 	BeforeUrlChangeEvent,
-	UrlChangeEvent,
 	eventBeforeUrlChange,
-	eventURLChange
+	eventURLChange,
+	UrlChangeEvent
 } from './navigationEvents/Events';

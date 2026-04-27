@@ -26,14 +26,14 @@ const ORIGIN = 'http://localhost';
 
 function createHistory() {
 	const state: NavigationState = {
-		url: new URL('', ORIGIN),
-		action: 'initial'
+		action: 'initial',
+		url: new URL('', ORIGIN)
 	};
 	const history: HistoryEvent[] = [];
 
 	const events: Record<keyof NavigationType, Array<NavigationType[keyof NavigationType]>> = {
-		URLChange: [],
-		beforeURLChange: []
+		beforeURLChange: [],
+		URLChange: []
 	};
 
 	function navigateNext(
@@ -51,27 +51,31 @@ function createHistory() {
 			}
 		};
 		switch ( current.action ) {
-			case 'push':
+			case 'pop': {
+				history.pop();
+				break;
+			}
+			case 'push': {
 				if ( history.length >= 100 ) {
 					history.shift();
 				}
 				history.push(hist);
 				break;
-			case 'replace':
+			}
+			case 'replace': {
 				history[history.length - 1] = hist;
 				break;
-			case 'stack':
+			}
+			case 'stack': {
 				const index = history.findIndex(({ current: { url } }) => url === hist.current.url);
-				if ( index > -1 ) {
-					history.splice(index, history.length);
+				if ( index !== -1 ) {
+					history.splice(index);
 				}
 				if ( !isStackPop ) {
 					history.push(hist);
 				}
 				break;
-			case 'pop':
-				history.pop();
-				break;
+			}
 		}
 		
 		state.url = current.url;
@@ -85,7 +89,9 @@ function createHistory() {
 
 	function setCurrentUrl(url: URL, navigationAction: NavigationActionType, isStackPop?: boolean) {
 		const current: NavigationState = {
-			action: isStackPop ? 'stack' : navigationAction,
+			action: isStackPop
+				? 'stack'
+				: navigationAction,
 			url 
 		};
 		
@@ -104,9 +110,10 @@ function createHistory() {
 
 	function navigate(
 		url: string | URL, 
+		// eslint-disable-next-line unicorn/no-object-as-default-parameter
 		config: NavigateConfig = {
-			replace: false,
-			action: 'push'
+			action: 'push',
+			replace: false
 		}
 	) {
 		const action = config.action 
@@ -116,7 +123,9 @@ function createHistory() {
 					: 'push'
 			);
 
-		const newUrl = new URL(typeof url === 'string' ? url : url.href, ORIGIN);
+		const newUrl = new URL(typeof url === 'string'
+			? url
+			: url.href, ORIGIN);
 
 		setCurrentUrl(
 			newUrl, 
@@ -129,7 +138,9 @@ function createHistory() {
 
 		if ( previousURL ) {
 			const isStack = previousURL.new.action === 'stack';
-			setCurrentUrl(previousURL.current.url, isStack ? 'stack' : 'pop', isStack);
+			setCurrentUrl(previousURL.current.url, isStack
+				? 'stack'
+				: 'pop', isStack);
 		
 			return true;
 		}
@@ -151,7 +162,7 @@ function createHistory() {
 		return () => {
 			const index = events[key].indexOf(cb);
 
-			if ( index > -1 ) {
+			if ( index !== -1 ) {
 				events[key].splice(index, 1);
 			}
 		};
@@ -162,11 +173,11 @@ function createHistory() {
 	}
 
 	return {
-		navigate,
 		addEventListener,
 		goBack,
-		state,
-		initial
+		initial,
+		navigate,
+		state
 	};
 }
 

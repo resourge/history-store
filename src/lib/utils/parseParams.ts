@@ -1,22 +1,32 @@
 /**
+ * Convert params into a search string.
+ * @param paramValues
+ * @param prefixKey - prefix key for searchParams object
+ * @returns {string}
+ */
+export function parseParams<T extends Record<string, any>>(
+	paramValues: T,
+	prefixKey: string = ''
+): string {
+	const searchParams = parseObject(
+		paramValues,
+		new URLSearchParams(),
+		prefixKey
+	);
+	searchParams.sort();
+	const params = searchParams.toString();
+	return params
+		? `?${params}`
+		: '';
+}
+
+/**
  * Check if value is a true object.
  * @param obj 
  * @returns {boolean}
  */
 function isObject(obj: any): boolean {
 	return Object.prototype.toString.call(obj) === '[object Object]';
-}
-
-/**
- * Makes sure some values like function/Map/Set are not converted to {@link URLSearchParams}
- * @param value
- * @returns {boolean}
- */
-function toIgnore(value: any): boolean {
-	return typeof value === 'function'
-		|| value instanceof Map
-		|| value instanceof Set
-		|| value === undefined;
 }
 
 function parseObject (
@@ -34,7 +44,9 @@ function parseObject (
 			parseObject(
 				state[_key], 
 				urlParams, 
-				`${previousKey ? `${previousKey}.` : ''}${_key}`
+				`${previousKey
+					? `${previousKey}.`
+					: ''}${_key}`
 			);
 		});
 	}
@@ -43,33 +55,29 @@ function parseObject (
 			parseObject(
 				value, 
 				urlParams, 
-				`${previousKey ? `${previousKey}` : ''}[${index}]`
+				`${previousKey
+					? `${previousKey}`
+					: ''}[${index}]`
 			);
 		});
 	}
 	else {
-		urlParams.append(previousKey, state instanceof Date ? state.toISOString() : state);
+		urlParams.append(previousKey, state instanceof Date
+			? state.toISOString()
+			: state);
 	}
 
 	return urlParams;
 }
 
 /**
- * Convert params into a search string.
- * @param paramValues
- * @param prefixKey - prefix key for searchParams object
- * @returns {string}
+ * Makes sure some values like function/Map/Set are not converted to {@link URLSearchParams}
+ * @param value
+ * @returns {boolean}
  */
-export function parseParams<T extends Record<string, any>>(
-	paramValues: T,
-	prefixKey: string = ''
-): string {
-	const searchParams = parseObject(
-		paramValues,
-		new URLSearchParams(),
-		prefixKey
-	);
-	searchParams.sort();
-	const params = searchParams.toString();
-	return params ? `?${params}` : '';
+function toIgnore(value: any): boolean {
+	return typeof value === 'function'
+		|| value instanceof Map
+		|| value instanceof Set
+		|| value === undefined;
 }

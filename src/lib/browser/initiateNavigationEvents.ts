@@ -14,21 +14,21 @@ export const initiateNavigationEvents = () => {
 	 * 
 	 * @see https://stackoverflow.com/a/4585031
 	 */
-	if (typeof window.history !== 'undefined') {
+	if (globalThis.history !== undefined) {
 		[pushState, replaceState].forEach((method) => {
 			const type = method as keyof Pick<History, 'pushState' | 'replaceState'>;
-			const original = window.history[type];
+			const original = globalThis.history[type];
 		
-			window.history[type] = function (...args) {
-				// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+			globalThis.history[type] = function (...args) {
 				const result = original.apply(this, args);
 				const action = getAction(args[0], type);
 				const url = args[2] 
 					? (
 						typeof args[2] === 'string' 
-							? new URL(args[2], window.location.origin) 
+							? new URL(args[2], globalThis.location.origin) 
 							: args[2]
-					) : new URL(window.location.href);
+					)
+					: new URL(globalThis.location.href);
 				
 				const event = new UrlChangeEvent(action, url);
 				setLastURLChangeEvent(event);
@@ -38,7 +38,7 @@ export const initiateNavigationEvents = () => {
 			};
 		});
 
-		Object.defineProperty(window, 'resourge_history', {
+		Object.defineProperty(globalThis.window, 'resourge_history', {
 			value: 'resourge_history',
 			writable: false
 		});

@@ -1,11 +1,11 @@
 import './GlobalEvents';
 
-export type { NavigationActionType } from './types/index';
 export {
-	BeforeUrlChangeEvent, UrlChangeEvent, eventBeforeUrlChange, eventURLChange
+	BeforeUrlChangeEvent, eventBeforeUrlChange, eventURLChange, UrlChangeEvent
 } from './browser/index';
 export {
 	default as HistoryStore,
-	type StoreValue,
-	type NavigateOptions
+	type NavigateOptions,
+	type StoreValue
 } from './store/HistoryStore';
+export type { NavigationActionType } from './types/index';

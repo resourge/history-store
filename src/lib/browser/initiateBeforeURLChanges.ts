@@ -22,8 +22,11 @@ import {
 /**
  * Checks is data from '(push/replace)State' has action key
  */
-export const getAction = (state: any, type: keyof typeof EVENTS) =>
-	EVENTS_KEYS.includes(state?.action) ? state.action : EVENTS[type];
+export const getAction = (state: any, type: keyof typeof EVENTS) => (
+	EVENTS_KEYS.includes(state?.action)
+		? state.action
+		: EVENTS[type]
+);
 
 const getBeforeEvents = () => {
 	const beforeEvents: Array<(e: BeforeUrlChangeEvent) => boolean> = [];
@@ -67,15 +70,15 @@ export const initiateBeforeURLChanges = () => {
 
 	[pushState, replaceState, go, back, forward].forEach((method) => {
 		const type = method as keyof Pick<History, 'pushState' | 'replaceState'>;
-		const original = window.history[type];
+		const original = globalThis.history[type];
 
-		window.history[type] = function (...args) {
+		globalThis.history[type] = function (...args) {
 			const action = getAction(args[0], type);
 			const url = args[2]
 				? typeof args[2] === 'string'
-					? new URL(args[2], window.location.origin)
+					? new URL(args[2], globalThis.location.origin)
 					: args[2]
-				: new URL(window.location.href);
+				: new URL(globalThis.location.href);
 
 			const event = new BeforeUrlChangeEvent(action, url, () => {
 				if (method === back) {
@@ -90,7 +93,7 @@ export const initiateBeforeURLChanges = () => {
 
 			original.apply(this, args);
 		};
-		originalHistory[type] = original.bind(window.history);
+		originalHistory[type] = original.bind(globalThis.history);
 	});
 
 	let preventDoublePopState = false;
@@ -117,12 +120,12 @@ export const initiateBeforeURLChanges = () => {
 		dispatchEvent(urlChangeEvent);
 	};
 	
-	window.addEventListener(popState, popStateCb, false);
+	globalThis.addEventListener(popState, popStateCb, false);
 
-	window.addEventListener(beforeunload, (e) => {
+	globalThis.addEventListener(beforeunload, (e) => {
 		const event = new BeforeUrlChangeEvent(
 			EVENTS[beforeunload],
-			new URL(window.location.href),
+			new URL(globalThis.location.href),
 			() => originalHistory.back()
 		);
 

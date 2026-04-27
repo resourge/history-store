@@ -4,7 +4,6 @@ import { defineConfig, type UserConfig, type UserConfigExport } from 'vite';
 import banner from 'vite-plugin-banner';
 import { checker } from 'vite-plugin-checker';
 import dts from 'vite-plugin-dts';
-import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 import PackageJson from '../package.json';
 
@@ -74,7 +73,6 @@ export const defineLibConfig = (
 			},
 		plugins: [
 			banner(createBanner()),
-			viteTsconfigPaths(),
 			checker({ 
 				enableBuild: true,
 				eslint: {

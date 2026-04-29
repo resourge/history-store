@@ -1,6 +1,8 @@
+/// <reference types="vitest/config" />
+
 import deepmerge from '@fastify/deepmerge';
 import cleanup from 'rollup-plugin-cleanup';
-import { defineConfig, type UserConfig, type UserConfigExport } from 'vite';
+import { defineConfig, type UserConfigExport } from 'vite';
 import banner from 'vite-plugin-banner';
 import { checker } from 'vite-plugin-checker';
 import dts from 'vite-plugin-dts';
@@ -52,10 +54,12 @@ export const defineLibConfig = (
 			rollupOptions: {
 				external,
 				output: {
+					cleanDir: true,
+					codeSplitting: true,
 					dir: './dist',
 					entryFileNames: '[name].js', // Ensures main file name does not have an extension
-					inlineDynamicImports: false,
 					preserveModules: true
+					
 					// chunkFileNames: (chunkInfo) => chunkInfo.name.split('lib/')[1]
 				},
 				plugins: [
@@ -96,18 +100,7 @@ export const defineLibConfig = (
 					'./src/setupTests.ts'
 				],
 				insertTypesEntry: true
-			}),
-			{
-				generateBundle(_, bundle) {
-					// eslint-disable-next-line @typescript-eslint/no-unused-vars
-					for (const [_, value] of Object.entries(bundle)) {
-						if (value.type === 'chunk') {
-							value.code = value.code.replaceAll(/(?<=import\s+.*?['"])([^'"]+)\.js(?=['"])/g, '$1');
-						}
-					}
-				},
-				name: 'remove-file-extensions'
-			}
+			})
 		],
 		resolve: {
 			tsconfigPaths: true
@@ -117,5 +110,5 @@ export const defineLibConfig = (
 			globals: true,
 			setupFiles: './src/setupTests.ts'
 		}
-	} as UserConfig
+	}
 ));

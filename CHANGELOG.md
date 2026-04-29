@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/resourge/history-store/compare/v1.4.0...v1.4.1) (2026-04-29)
+
+
+### Bug Fixes
+
+* **imports:** add file extension ([fbc8e56](https://github.com/resourge/history-store/commit/fbc8e56861e448ba2e3eed256752fabd6430a06e))
+
 # [1.4.0](https://github.com/resourge/history-store/compare/v1.3.5...v1.4.0) (2025-05-22)
 
 
